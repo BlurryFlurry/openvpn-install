@@ -239,6 +239,8 @@ else
 	mv /etc/openvpn/EasyRSA-3.0.4/ /etc/openvpn/easy-rsa/
 	chown -R root:root /etc/openvpn/easy-rsa/
 	rm -rf ~/EasyRSA-3.0.4.tgz
+	mv /etc/openvpn/easy-rsa/vars.example /etc/openvpn/easy-rsa/vars
+	sed -i "s/#set_var EASYRSA_KEY_SIZE$(printf '\t')2048/set_var EASYRSA_KEY_SIZE 4096/" /etc/openvpn/easy-rsa/vars
 	cd /etc/openvpn/easy-rsa/
 	# Create the PKI, set up the CA, the DH params and the server + client certificates
 	./easyrsa init-pki
@@ -414,6 +416,7 @@ cipher AES-256-CBC
 comp-lzo
 setenv opt block-outside-dns
 key-direction 1
+auth-nocache
 verb 3" > /etc/openvpn/client-common.txt
 	# Generates the custom client.ovpn
 	newclient "$CLIENT"
